@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Sistema CONTAINER</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/regenerator-runtime@0.13.7/runtime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/keycloak-js@21.0.0/dist/keycloak.min.js"></script>
+
+    <meta name="importmap-type" content="systemjs-importmap" />
+
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js",
+          "feather": "https://unpkg.com/feather-icons@4.29.0/dist/feather.min.js"
+        }
+      }
+    </script>
+    <link
+      rel="preload"
+      href="https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js"
+      as="script"
+    />
+
+    <% if (isLocal) { %>
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "@ropabajoContainerApp/web-ap-container": "//localhost:9099/ropabajoContainerApp-web-ap-container.js",
+          "@ropabajoContainerApp/ropabajo-header": "//localhost:9098/main.js"
+        }
+      }
+    </script>
+    <% } else { %>
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "@ropabajoContainerApp/web-ap-container": "//apps2desa.mineco.gob.pe/ropabajocontainer/ropabajoContainerApp-web-ap-container.js",
+          "@ropabajoContainerApp/ropabajo-header": "//apps2desa.mineco.gob.pe/nsrtmheader/main.js"
+        }
+      }
+    </script>
+    <% } %>
+
+    <script src="https://cdn.jsdelivr.net/npm/zone.js@0.11.3/dist/zone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/import-map-overrides@2.2.0/dist/import-map-overrides.js"></script>
+    <% if (isLocal) { %>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/system.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.js"></script>
+    <% } else { %>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.min.js"></script>
+    <% } %>
+    <script type="text/javascript">
+      const userNSRTM = "USER-NSRTM";
+      const tknNSRTM = "TKN-NSRTM";
+      const MENU_SELECTED = "MENU_ROL_SELECTED";
+      const agenciaNSRTM = "AGENCIA-NSRTM";
+      const ipLocalNSRTM = "IPLOCAL-NSRTM";
+      const muniNSRTM = "MUNI-NSRTM";
+      const contribuyenteActualNSRTM = "NUM-CONTRIBUYENTE-ACTUAL";
+      const uriServer = "http://localhost:9000/ropabajocontainer/"; // https://apps2desa.mineco.gob.pe/ropabajocontainer/
+
+      const keycloak = new Keycloak({
+        realm: "mef-comp5",
+        url: "https://authorizedesa.mineco.gob.pe/auth", // http://127.0.0.1:8099/auth
+        clientId: "jwtClient",
+        "public-client": true,
+      });
+
+      function initKeycloak() {
+        System.import("@ropabajoContainerApp/web-ap-container");
+      }
+
+      function _initKeycloak() {
+        keycloak
+          .init({
+            onLoad: "login-required",
+            checkLoginIframe: false,
+            checkLoginIframeInterval: 25,
+          })
+          .then(function (authenticated) {
+            if (authenticated) {
+              console.log(keycloak, "keycloak");
+              keycloak
+                .loadUserInfo()
+                .then(function (info) {
+                  localStorage.setItem(userNSRTM, JSON.stringify(info));
+                  localStorage.setItem(
+                    tknNSRTM,
+                    JSON.stringify(keycloak.token)
+                  );
+                  System.import("@ropabajoContainerApp/web-ap-container");
+                })
+                .catch(function (ex) {
+                  console.error("Failed to load user info");
+                });
+              keycloak.onTokenExpired = (token) => {
+                keycloak
+                  .updateToken(10)
+                  .then((response) => {
+                    console.log("Token expired");
+                  })
+                  .catch(console.log);
+              };
+            }
+          })
+          .catch(function (ex) {
+            console.log(ex);
+          });
+      }
+
+      function logoutKey() {
+        var logoutOptions = { redirectUri: uriServer };
+        localStorage.removeItem(userNSRTM);
+        localStorage.removeItem(tknNSRTM);
+        localStorage.removeItem(MENU_SELECTED);
+        localStorage.removeItem(agenciaNSRTM);
+        localStorage.removeItem(muniNSRTM);
+        localStorage.removeItem(ipLocalNSRTM);
+        localStorage.removeItem(contribuyenteActualNSRTM);
+        keycloak.logout(logoutOptions);
+      }
+
+      function toggleSlide() {
+        const div = document.getElementById("ariaDropdownUser");
+
+        if (div.classList.contains("show")) {
+          div.classList.remove("show");
+        } else {
+          div.classList.add("show");
+        }
+      }
+
+      function toggleMenu(esCerrar = false) {
+        console.log("toggleMenu");
+        const div = document.getElementById("srtmApp-content_sidebar");
+        if (esCerrar) {
+          div.classList.add("d-none");
+        } else {
+          div.classList.remove("d-none");
+        }
+      }
+
+      function onTokenExpired() {
+        keycloak.onTokenExpired = async () => {
+          try {
+            const refreshed = await keycloak.updateToken(15);
+            if (refreshed) {
+              localStorage.setItem(tknNSRTM, JSON.stringify(keycloak.token));
+              console.log(keycloak.token);
+            } else {
+              console.log("Refreshing token error");
+            }
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+      }
+
+      onTokenExpired();
+      initKeycloak();
+    </script>
+  </head>
+
+  <body class="siaf nsrtm">
+    <import-map-overrides-full
+      show-when-local-storage="devtools"
+      dev-libs
+    ></import-map-overrides-full>
+  </body>
+</html>
