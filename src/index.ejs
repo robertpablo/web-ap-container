@@ -55,24 +55,32 @@
     <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.min.js"></script>
     <% } %>
     <script type="text/javascript">
+      const uriServer = "http://localhost:9000/ropabajocontainer/";
+
       const userNSRTM = "USER-NSRTM";
       const tknNSRTM = "TKN-NSRTM";
       const MENU_SELECTED = "MENU_ROL_SELECTED";
       const agenciaNSRTM = "AGENCIA-NSRTM";
       const ipLocalNSRTM = "IPLOCAL-NSRTM";
       const muniNSRTM = "MUNI-NSRTM";
-      const contribuyenteActualNSRTM = "NUM-CONTRIBUYENTE-ACTUAL";
-      const uriServer = "http://localhost:9000/ropabajocontainer/"; // https://apps2desa.mineco.gob.pe/ropabajocontainer/
 
       const keycloak = new Keycloak({
-        realm: "mef-comp5",
-        url: "https://authorizedesa.mineco.gob.pe/auth", // http://127.0.0.1:8099/auth
-        clientId: "jwtClient",
-        "public-client": true,
+        url: "https://localhost:8443/",
+        realm: "ropabajo",
+        clientId: "containerId",
       });
 
       function initKeycloak() {
-        System.import("@ropabajoContainerApp/web-ap-container");
+        keycloak
+          .init({
+            onLoad: "login-required",
+            checkLoginIframe: false,
+            checkLoginIframeInterval: 25,
+          })
+          .then((authenticated) => {
+            console.log(authenticated ? "Autenticado" : "No autenticado");
+            System.import("@ropabajoContainerApp/web-ap-container");
+          });
       }
 
       function _initKeycloak() {
@@ -121,7 +129,7 @@
         localStorage.removeItem(agenciaNSRTM);
         localStorage.removeItem(muniNSRTM);
         localStorage.removeItem(ipLocalNSRTM);
-        localStorage.removeItem(contribuyenteActualNSRTM);
+
         keycloak.logout(logoutOptions);
       }
 
