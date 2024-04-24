@@ -36,11 +36,11 @@ registerApplication({
 //     activeWhen: ["/", "/ropabajocontainer"],
 // });
 
-// //MFE EMSION COBRANZAS
-// registerApplication({
-//     name: "@ropabajoContainerApp/nsrtmemisioncobranza",
-//     app: () => System.import("@ropabajoContainerApp/nsrtmemisioncobranza"),
-//     activeWhen: ["/ropabajocontainer/nsrtmemisioncobranza"],
-// });
+//MFE EMSION COBRANZAS
+registerApplication({
+    name: "@ropabajoContainerApp/ropabajobulkload",
+    app: () => System.import("@ropabajoContainerApp/ropabajobulkload"),
+    activeWhen: ["/ropabajocontainer/ropabajobulkload"],
+});
 
 start();
