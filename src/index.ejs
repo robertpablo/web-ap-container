@@ -28,9 +28,9 @@
     <script type="systemjs-importmap">
       {
         "imports": {
-          "@ropabajoContainerApp/web-ap-container": "//localhost:9099/ropabajoContainerApp-web-ap-container.js",
-          "@ropabajoContainerApp/ropabajo-header": "//localhost:9098/main.js",
-          "@ropabajoContainerApp/ropabajobulkload": "//localhost:9097/main.js"
+          "@containerApp/web-ap-container": "//localhost:9099/containerApp-web-ap-container.js",
+          "@containerApp/ropabajo-header": "//localhost:9098/main.js",
+          "@containerApp/bulk-load": "//localhost:9097/main.js"
         }
       }
     </script>
@@ -38,9 +38,9 @@
     <script type="systemjs-importmap">
       {
         "imports": {
-          "@ropabajoContainerApp/web-ap-container": "//apps2desa.mineco.gob.pe/ropabajocontainer/ropabajoContainerApp-web-ap-container.js",
-          "@ropabajoContainerApp/ropabajo-header": "//apps2desa.mineco.gob.pe/ropabajoheader/main.js"
-          "@ropabajoContainerApp/ropabajobulkload": "//apps2desa.mineco.gob.pe/ropabajobulkload/main.js"
+          "@containerApp/web-ap-container": "//apps2desa.mineco.gob.pe/container/containerApp-web-ap-container.js",
+          "@containerApp/ropabajo-header": "//apps2desa.mineco.gob.pe/ropabajoheader/main.js"
+          "@containerApp/ropabajobulkload": "//apps2desa.mineco.gob.pe/bulk-load/main.js"
         }
       }
     </script>
@@ -80,12 +80,12 @@
           })
           .then((authenticated) => {
             console.log(authenticated ? "Autenticado" : "No autenticado");
-            System.import("@ropabajoContainerApp/web-ap-container");
+            System.import("@containerApp/web-ap-container");
           });
       }
 
       function _initKeycloak() {
-        System.import("@ropabajoContainerApp/web-ap-container");
+        System.import("@containerApp/web-ap-container");
       }
 
       function logoutKey() {

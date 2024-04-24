@@ -3,7 +3,7 @@ const singleSpaDefaults = require("webpack-config-single-spa");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = (webpackConfigEnv, argv) => {
-    const orgName = "ropabajoContainerApp";
+    const orgName = "containerApp";
     const defaultConfig = singleSpaDefaults({
         orgName,
         projectName: "web-ap-container",

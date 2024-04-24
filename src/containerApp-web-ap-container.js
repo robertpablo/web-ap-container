@@ -25,9 +25,9 @@ applications.forEach(registerApplication);
 layoutEngine.activate();
 
 registerApplication({
-    name: "@ropabajoContainerApp/ropabajo-header",
-    app: () => System.import("@ropabajoContainerApp/ropabajo-header"),
-    activeWhen: ["/ropabajocontainer"],
+    name: "@containerApp/ropabajo-header",
+    app: () => System.import("@containerApp/ropabajo-header"),
+    activeWhen: ["/container"],
 });
 
 // registerApplication({
@@ -38,9 +38,9 @@ registerApplication({
 
 //MFE EMSION COBRANZAS
 registerApplication({
-    name: "@ropabajoContainerApp/ropabajobulkload",
-    app: () => System.import("@ropabajoContainerApp/ropabajobulkload"),
-    activeWhen: ["/ropabajocontainer/ropabajobulkload"],
+    name: "@containerApp/bulk-load",
+    app: () => System.import("@containerApp/bulk-load"),
+    activeWhen: ["/container/bulk-load"],
 });
 
 start();
