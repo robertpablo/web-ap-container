@@ -1,9 +1,6 @@
 <single-spa-router>
   <div id="ropabajoApp">
-    <header
-      id="single-spa-application:@containerApp/ropabajo-header"
-      class="ropabajoApp-header"
-    ></header>
+    <header id="single-spa-application:@containerApp/ropabajo-header"></header>
     <div class="ropabajoApp-content-container">
       <aside
         id="ropabajoApp-content_sidebar"
@@ -13,10 +10,12 @@
           id="single-spa-application:@containerApp/nsrtm-menu"
         ></section> -->
       </aside>
-      <main class="ropabajoApp-content_main">
-        <section
-          id="single-spa-application:@containerApp/ropabajobulkload"
-        ></section>
+      <main>
+        <div class="container-fluid">
+          <section
+            id="single-spa-application:@containerApp/ropabajobulkload"
+          ></section>
+        </div>
       </main>
     </div>
   </div>

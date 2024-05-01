@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Sistema CONTAINER</title>
+    <title>ROPABAJO</title>
 
     <script src="https://cdn.jsdelivr.net/npm/regenerator-runtime@0.13.7/runtime.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/keycloak-js@21.0.0/dist/keycloak.min.js"></script>
@@ -71,7 +71,7 @@
         clientId: "containerId",
       });
 
-      function initKeycloak() {
+      function _initKeycloak() {
         keycloak
           .init({
             onLoad: "login-required",
@@ -84,7 +84,7 @@
           });
       }
 
-      function _initKeycloak() {
+      function initKeycloak() {
         System.import("@containerApp/web-ap-container");
       }
 
