@@ -8,7 +8,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/regenerator-runtime@0.13.7/runtime.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/keycloak-js@21.0.0/dist/keycloak.min.js"></script>
-
+    
     <meta name="importmap-type" content="systemjs-importmap" />
 
     <script type="systemjs-importmap">
@@ -24,27 +24,22 @@
       as="script"
     />
 
-    <% if (isLocal) { %>
     <script type="systemjs-importmap">
       {
         "imports": {
-          "@containerApp/web-ap-container": "//localhost:9099/containerApp-web-ap-container.js",
-          "@containerApp/ropabajo-header": "//localhost:9098/main.js",
-          "@containerApp/bulk-load": "//localhost:9097/main.js"
+          "@containerApp/web-ap-container": "<%= URL_UI %>/containerApp-web-ap-container.js",
+          "@containerApp/ropabajo-header": "<%= URL_HEADER_UI %>/main.js",
+          "@containerApp/bulk-load": "<%= URL_BULK_LOAD_UI %>/main.js"
         }
       }
     </script>
-    <% } else { %>
-    <script type="systemjs-importmap">
-      {
-        "imports": {
-          "@containerApp/web-ap-container": "//apps2desa.mineco.gob.pe/container/containerApp-web-ap-container.js",
-          "@containerApp/ropabajo-header": "//apps2desa.mineco.gob.pe/ropabajoheader/main.js"
-          "@containerApp/bulk-load": "//apps2desa.mineco.gob.pe/bulk-load/main.js"
-        }
-      }
+
+    <script type="text/javascript">
+      console.log(
+        "HtmlWebpackPlugin Options:",
+        '"<%= JSON.stringify(htmlWebpackPlugin.options) %>"'
+      );
     </script>
-    <% } %>
 
     <script src="https://cdn.jsdelivr.net/npm/zone.js@0.11.3/dist/zone.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/import-map-overrides@2.2.0/dist/import-map-overrides.js"></script>
@@ -57,13 +52,6 @@
     <% } %>
     <script type="text/javascript">
       const uriServer = "http://localhost:9000/ropabajocontainer/";
-
-      const userNSRTM = "USER-NSRTM";
-      const tknNSRTM = "TKN-NSRTM";
-      const MENU_SELECTED = "MENU_ROL_SELECTED";
-      const agenciaNSRTM = "AGENCIA-NSRTM";
-      const ipLocalNSRTM = "IPLOCAL-NSRTM";
-      const muniNSRTM = "MUNI-NSRTM";
 
       const keycloak = new Keycloak({
         url: "https://localhost:8443/",
@@ -90,13 +78,7 @@
 
       function logoutKey() {
         var logoutOptions = { redirectUri: uriServer };
-        localStorage.removeItem(userNSRTM);
-        localStorage.removeItem(tknNSRTM);
-        localStorage.removeItem(MENU_SELECTED);
-        localStorage.removeItem(agenciaNSRTM);
-        localStorage.removeItem(muniNSRTM);
-        localStorage.removeItem(ipLocalNSRTM);
-
+        //localStorage.removeItem(userNSRTM);
         keycloak.logout(logoutOptions);
       }
 
@@ -140,7 +122,6 @@
       initKeycloak();
     </script>
   </head>
-
   <body>
     <import-map-overrides-full
       show-when-local-storage="devtools"

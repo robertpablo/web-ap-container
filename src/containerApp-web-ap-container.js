@@ -5,7 +5,6 @@ import {
     constructLayoutEngine,
 } from "single-spa-layout";
 import microfrontendLayout from "./microfrontend-layout.html";
-
 import "@angular/localize/init";
 
 const routes = constructRoutes(microfrontendLayout);
@@ -16,12 +15,14 @@ const applications = constructApplications({
         return System.import(name);
     },
 });
+
 const layoutEngine = constructLayoutEngine({
     routes,
     applications,
 });
 
 applications.forEach(registerApplication);
+
 layoutEngine.activate();
 
 registerApplication({
@@ -30,13 +31,6 @@ registerApplication({
     activeWhen: ["/container"],
 });
 
-// registerApplication({
-//     name: "@ropabajoContainerApp/nsrtm-menu",
-//     app: () => System.import("@ropabajoContainerApp/nsrtm-menu"),
-//     activeWhen: ["/", "/ropabajocontainer"],
-// });
-
-//MFE EMSION COBRANZAS
 registerApplication({
     name: "@containerApp/bulk-load",
     app: () => System.import("@containerApp/bulk-load"),
