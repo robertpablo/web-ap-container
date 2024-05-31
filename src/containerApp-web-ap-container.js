@@ -28,13 +28,13 @@ layoutEngine.activate();
 registerApplication({
     name: "@containerApp/ropabajo-header",
     app: () => System.import("@containerApp/ropabajo-header"),
-    activeWhen: ["/container"],
+    activeWhen: ["/"],
 });
 
 registerApplication({
     name: "@containerApp/bulk-load",
     app: () => System.import("@containerApp/bulk-load"),
-    activeWhen: ["/container/bulk-load"],
+    activeWhen: ["/bulk-load"],
 });
 
 start();
